@@ -12,7 +12,6 @@ import {z} from 'genkit';
 
 const ExplainGovernmentSchemeInputSchema = z.object({
   query: z.string().describe('The user query about a government scheme.'),
-  language: z.string().describe('The preferred language of the user.'),
 });
 export type ExplainGovernmentSchemeInput = z.infer<typeof ExplainGovernmentSchemeInputSchema>;
 
@@ -41,7 +40,7 @@ When asked about a scheme, give:
 4. Official link (if available).
 
 User Query: {{{query}}}
-Preferred Language: {{{language}}}`,
+Detect the language of the user query and respond in that language.`,
 });
 
 const explainGovernmentSchemeFlow = ai.defineFlow(
@@ -55,4 +54,3 @@ const explainGovernmentSchemeFlow = ai.defineFlow(
     return output!;
   }
 );
-

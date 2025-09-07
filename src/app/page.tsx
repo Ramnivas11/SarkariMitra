@@ -6,17 +6,10 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Bot, User, Send, Languages, Loader2, Landmark } from 'lucide-react';
+import { Bot, User, Send, Loader2, Landmark } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { getSchemeExplanation, getEligibility } from './actions';
 import { SchemeExplanation } from '@/components/scheme-explanation';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import { cn } from '@/lib/utils';
 import type { ExplainGovernmentSchemeOutput } from '@/ai/flows/explain-government-schemes';
 
@@ -49,7 +42,6 @@ export default function Home() {
     },
   ]);
   const [input, setInput] = useState('');
-  const [language, setLanguage] =useState('English');
   const [isPending, startTransition] = useTransition();
 
   const [eligibilityState, setEligibilityState] = useState<{
@@ -94,7 +86,7 @@ export default function Home() {
 
     startTransition(async () => {
       const loadingId = addMessage('bot', <Loader2 className="animate-spin text-primary" />);
-      const result = await getSchemeExplanation({ query: currentInput, language });
+      const result = await getSchemeExplanation({ query: currentInput });
 
       if ('error' in result) {
         updateMessage(loadingId, <p className="text-destructive">{result.error}</p>);
@@ -189,19 +181,6 @@ export default function Home() {
             Sarkari Mitra
           </h1>
         </div>
-        <Select value={language} onValueChange={setLanguage}>
-          <SelectTrigger className="w-[150px]">
-            <Languages className="mr-2 h-4 w-4" />
-            <SelectValue placeholder="Language" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="English">English</SelectItem>
-            <SelectItem value="Hindi">हिन्दी</SelectItem>
-            <SelectItem value="Telugu">తెలుగు</SelectItem>
-            <SelectItem value="Tamil">தமிழ்</SelectItem>
-            <SelectItem value="Gujarati">ગુજરાતી</SelectItem>
-          </SelectContent>
-        </Select>
       </header>
       <ScrollArea className="flex-1" ref={scrollAreaRef}>
         <div className="p-4 space-y-6">
