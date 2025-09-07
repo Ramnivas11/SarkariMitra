@@ -49,6 +49,7 @@ export default function Home() {
     schemeName: string;
     questionIndex: number;
     answers: boolean[];
+    language: string;
   } | null>(null);
 
   const scrollAreaRef = useRef<HTMLDivElement>(null);
@@ -107,12 +108,12 @@ export default function Home() {
     });
   };
   
-  const handleStartEligibilityCheck = (schemeName: string) => {
+  const handleStartEligibilityCheck = (schemeName: string, language: string) => {
     if (disableInputs) return;
     const questions = schemeQuestions[schemeName] || [];
     addMessage('bot', "Let's quickly check your eligibility.");
     if (questions.length > 0) {
-      setEligibilityState({ isActive: true, schemeName, questionIndex: 0, answers: [] });
+      setEligibilityState({ isActive: true, schemeName, questionIndex: 0, answers: [], language });
       addMessage('bot', createQuestionMessage(questions[0], schemeName, 0));
     } else {
       addMessage('bot', "Sorry, eligibility check isn't available for this scheme yet.");
@@ -146,7 +147,7 @@ export default function Home() {
       setEligibilityState(null);
       startTransition(async () => {
         const loadingId = addMessage('bot', <Loader2 className="animate-spin text-primary" />);
-        const result = await getEligibility({ schemeName, questions, answers: newAnswers });
+        const result = await getEligibility({ schemeName, questions, answers: newAnswers, language: eligibilityState.language });
         if ('error' in result) {
           updateMessage(loadingId, <p className="text-destructive">{result.error}</p>);
         } else {

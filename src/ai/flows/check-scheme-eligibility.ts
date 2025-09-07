@@ -20,6 +20,7 @@ const CheckSchemeEligibilityInputSchema = z.object({
   questions: z
     .array(z.string())
     .describe('An array of strings representing the eligibility questions.'),
+  language: z.string().describe('The language for the response.'),
 });
 
 export type CheckSchemeEligibilityInput = z.infer<
@@ -44,7 +45,7 @@ const checkEligibilityPrompt = ai.definePrompt({
   name: 'checkEligibilityPrompt',
   input: {schema: CheckSchemeEligibilityInputSchema},
   output: {schema: CheckSchemeEligibilityOutputSchema},
-  prompt: `You are an expert in Indian government schemes. You will use the user's answers to determine their eligibility for the scheme. If the user is not eligible, provide a reason why.
+  prompt: `You are an expert in Indian government schemes. You will use the user's answers to determine their eligibility for the scheme. If the user is not eligible, provide a reason why. Respond in {{{language}}}.
 
 Scheme Name: {{{schemeName}}}
 

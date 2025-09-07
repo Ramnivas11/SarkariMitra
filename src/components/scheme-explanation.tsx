@@ -9,7 +9,7 @@ import React from 'react';
 
 interface SchemeExplanationProps {
   schemeData: ExplainGovernmentSchemeOutput & { schemeName: string };
-  startEligibilityCheck: (schemeName: string) => void;
+  startEligibilityCheck: (schemeName: string, language: string) => void;
 }
 
 export function SchemeExplanation({ schemeData, startEligibilityCheck }: SchemeExplanationProps) {
@@ -43,7 +43,7 @@ export function SchemeExplanation({ schemeData, startEligibilityCheck }: SchemeE
           </Button>
         )}
         {canCheckEligibility && (
-          <Button onClick={() => startEligibilityCheck(schemeData.schemeName)} className="w-full sm:w-auto bg-accent text-accent-foreground hover:bg-accent/90">
+          <Button onClick={() => startEligibilityCheck(schemeData.schemeName, schemeData.language)} className="w-full sm:w-auto bg-accent text-accent-foreground hover:bg-accent/90">
               <ShieldQuestion className="mr-2 h-4 w-4" /> Check Eligibility
           </Button>
         )}

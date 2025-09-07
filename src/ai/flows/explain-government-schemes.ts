@@ -20,6 +20,7 @@ const ExplainGovernmentSchemeOutputSchema = z.object({
   eligibility: z.string().describe('Basic eligibility conditions for the scheme.'),
   applicationProcess: z.string().describe('Step-by-step process to apply for the scheme.'),
   officialLink: z.string().optional().describe('Official link to apply for the scheme, if available.'),
+  language: z.string().describe('The language of the user query.'),
 });
 export type ExplainGovernmentSchemeOutput = z.infer<typeof ExplainGovernmentSchemeOutputSchema>;
 
@@ -31,16 +32,19 @@ const prompt = ai.definePrompt({
   name: 'explainGovernmentSchemePrompt',
   input: {schema: ExplainGovernmentSchemeInputSchema},
   output: {schema: ExplainGovernmentSchemeOutputSchema},
-  prompt: `You are a friendly assistant that explains Indian government schemes to users in simple, clear language. Always reply in the user's language.
+  prompt: `You are a friendly assistant that explains Indian government schemes to users in simple, clear language.
 
-When asked about a scheme, give:
-1. Short explanation of the scheme.
+First, detect the language of the user's query.
+
+Then, provide the following information in the detected language:
+1. A short explanation of the scheme.
 2. Basic eligibility conditions.
-3. Step-by-step process to apply.
-4. Official link (if available).
+3. A step-by-step process to apply.
+4. The official link (if available).
+5. The detected language name (e.g., "English", "Hindi").
 
 User Query: {{{query}}}
-Detect the language of the user query and respond in that language.`,
+`,
 });
 
 const explainGovernmentSchemeFlow = ai.defineFlow(
